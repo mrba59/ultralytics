@@ -1,7 +1,9 @@
 import argparse
+from argparse import ArgumentParser
 from ultralytics import YOLO
 import time
 import tqdm
+import numpy as np
 
 
 def main(args):
@@ -15,20 +17,20 @@ def main(args):
     print(f"Save TXT: {args.save_txt}")
     print(f"Save Confidence: {args.save_conf}")
     print(f"vid_stride: {args.vid_stride}")
+
+    nb_pred_list = []
     model = YOLO(args.model_path)
-    results = model(args.video_path, conf=args.conf, save=True, stream=args.stream, save_txt=args.save_txt,
-                   save_conf=args.save_conf, show_labels=True, show_boxes=True, show_conf=True,
-                   vid_stride=args.vid_stride, iou=args.iou,
-                   project=args.output_path, name=args.output_name)
-    for result in results:
-        boxes = result.boxes  # Boxes object for bounding box outputs
-        masks = result.masks  # Masks object for segmentation masks outputs
-        keypoints = result.keypoints  # Keypoints object for pose outputs
-        probs = result.probs  # Probs object for classification outputs
-        obb = result.obb  # Oriented boxes object for OBB outputs
-        # result.show()  # display to screen
-        # result.save(filename="result.jpg")  # save to disk
-    # Your processing logic goes here
+    model.to('cuda')
+    start = time.time()
+    for result in tqdm.tqdm(
+            model.predict(args.video_path, conf=args.conf, iou=args.iou, save=True, stream=args.stream, save_crop=args.save_crop, save_txt=args.save_txt,
+                          batch=8,
+                          save_conf=args.save_conf, project=args.output_path, name=args.output_name, vid_stride=1)):
+        nb_pred_list.append(len(result.boxes))
+        pass
+    print(f"elapsed time  {time.time() - start}")
+    print(f" mean nb of object inside image: {np.mean(np.array(nb_pred_list))}")
+
 
 
 if __name__ == "__main__":
@@ -48,6 +50,27 @@ if __name__ == "__main__":
     parser.add_argument("--save_txt", action="store_true", help="Save the detection results to a TXT file")
     parser.add_argument("--save_conf", action="store_true", help="Save the confidence scores in the output")
     parser.add_argument("--vid_stride", type=int, help="Take every x frames from a video")
+    parser.add_argument("--save_crop", action="store_true", help="Save as crop object detected")
 
     args = parser.parse_args()
     main(args)
+
+"""results = model(args.video_path, conf=args.conf, save=True, stream=args.stream, save_txt=args.save_txt,
+                   save_conf=args.save_conf, show_labels=True, show_boxes=True, show_conf=True,
+                   vid_stride=args.vid_stride, iou=args.iou,
+                   project=args.output_path, name=args.output_name)"""
+
+# model = YOLO("/home/reda/Documents/ultralytics/runs/segment/yolov8x_seg/weights/best.pt")
+# model = YOLO("/home/reda/Documents/ultralytics/runs/detect/yolov8n_custom/weights/best.pt")
+# model = YOLO("/home/reda/Documents/ultralytics/runs/detect/yolov8_robo_human/weights/best.pt")
+# model = YOLO("rosen.pt")
+# model = YOLO("/home/reda/Documents/ultralytics/runs/detect/yolov8_robo2/weights/best.pt")
+
+# from ndarray
+# im2 = cv2.imread("/home/reda/Documents/Tracking/results/images_det/frame_6000.jpg")
+# video = "/home/reda/Documents/Dataset/france_croatie_fps10.mp4"
+# video = "/home/reda/Documents/drone/usld_lefrin_27_sept/DJI_0039.MP4"
+# video = "/home/reda/Documents/drone/usld_17_06_sept/DJI_0010.MP4"
+# video = "/home/reda/Documents/drone/usld_17_06_sept/DJI_0008.MP4"
+# dir_ = "/home/reda/Documents/Dataset/france_croatie_cut"
+
