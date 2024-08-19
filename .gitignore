@@ -170,3 +170,11 @@ pnnx*
 
 # calibration image
 calibration_*.npy
+
+#config
+ultralytics/cfg/trackers/
+
+#main
+track.py
+predict.py
+
