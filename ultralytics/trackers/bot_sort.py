@@ -214,8 +214,10 @@ class BOTSORT(BYTETracker):
         else:
             return [BOTrack(xyxy, s, c) for (xyxy, s, c) in zip(dets, scores, cls)]  # detections
 
-    def get_dists(self, tracks, detections):
+    def get_dists(self, tracks, detections, shape):
         """Calculates distances between tracks and detections using IoU and optionally ReID embeddings."""
+
+        dist_eucl = matching.euclidean_distance_center(tracks, detections, shape)
         dists = matching.iou_distance(tracks, detections)
         dists_mask = dists > self.proximity_thresh
 
