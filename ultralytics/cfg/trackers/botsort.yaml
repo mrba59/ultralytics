@@ -17,3 +17,17 @@ proximity_thresh: 0.02
 appearance_thresh: 0.05
 with_reid: True
 reid_checkpoint_path: /home/reda/Documents/projets/deep-person-reid-master/log/resnet50/model/model.pth.tar-120
+field:
+  left_line:
+    - [6, 677]
+    - [844, 137]
+  right_line:
+    - [2896, 115]
+    - [3833, 708]
+  top_line:
+    - [846, 135]
+    - [2907, 115]
+  bottom_line:
+    - [4, 2153]
+    - [3835, 2114]
+
