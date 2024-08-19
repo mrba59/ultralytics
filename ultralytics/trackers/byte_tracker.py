@@ -290,6 +290,28 @@ class BYTETracker:
         self.kalman_filter = self.get_kalmanfilter()
         self.reset_id()
 
+    def get_coeff(self, x1, y1, x2, y2):
+        """Calculate the slope (a) and intercept (b) of the line."""
+        a = (y2 - y1) / (x2 - x1)
+        b = y1 - a * x1
+        return a, b
+
+    def get_mask_in_field(self, list_boxes, field):
+        lf = field['left_line']
+        rf = field['right_line']
+        tf = field['top_line']
+        bf = field['bottom_line']
+        al, bl = self.get_coeff(lf[0][0], lf[0][1], lf[1][0], lf[1][1])
+        ar, br = self.get_coeff(rf[0][0], rf[0][1], rf[1][0], rf[1][1])
+        masks = []
+        for boxe in list_boxes:
+            x, y, w, h, cls = boxe
+            central = [x + (w / 2), y + (h / 2)]
+            in_field = (central[0] >= (central[1] - bl) / al) and (central[0] <= (central[1] - br) / ar) and \
+                       (central[1] > min(tf[0][1], tf[1][1])) and (central[1] < max(bf[0][1], bf[1][1]))
+            masks.append(in_field)
+        return np.array(masks)
+
     def update(self, results, img=None):
         """Updates the tracker with new detections and returns the current list of tracked objects."""
         self.frame_id += 1
@@ -304,11 +326,20 @@ class BYTETracker:
         bboxes = np.concatenate([bboxes, np.arange(len(bboxes)).reshape(-1, 1)], axis=-1)
         cls = results.cls
 
+
+
         remain_inds = scores >= self.args.track_high_thresh
         inds_low = scores > self.args.track_low_thresh
         inds_high = scores < self.args.track_high_thresh
-
         inds_second = inds_low & inds_high
+
+        if self.args.field is not None:
+            field = self.args.field
+            mask_field = self.get_mask_in_field(bboxes, field)
+            remain_inds = remain_inds & mask_field
+            inds_second = inds_second & mask_field
+
+
         dets_second = bboxes[inds_second]
         dets = bboxes[remain_inds]
         scores_keep = scores[remain_inds]
