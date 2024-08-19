@@ -135,6 +135,43 @@ def embedding_distance(tracks: list, detections: list, metric: str = "cosine") -
     return cost_matrix
 
 
+def euclidean_distance_center(tracks: list, detections: list, shape) -> np.ndarray:
+    """
+    Compute Euclidean distance between the center positions of tracks and detections.
+
+    Args:
+        tracks (list[STrack]): List of tracks, where each track contains center position (e.g., [center_x, center_y]).
+        detections (list[BaseTrack]): List of detections, where each detection contains center position.
+
+    Returns:
+        (np.ndarray): Cost matrix of Euclidean distances with shape (N, M), where N is the number of tracks
+            and M is the number of detections.
+
+    Examples:
+        Compute the Euclidean distance between tracks and detections based on center positions
+        >>> tracks = [STrack(...), STrack(...)]  # List of track objects with center positions
+        >>> detections = [BaseTrack(...), BaseTrack(...)]  # List of detection objects with center positions
+        >>> cost_matrix = euclidean_distance_center(tracks, detections)
+    """
+
+    # Initialize cost matrix with zeros
+    cost_matrix = np.zeros((len(tracks), len(detections)), dtype=np.float32)
+
+    # Return the cost matrix if no tracks or detections
+    if cost_matrix.size == 0:
+        return cost_matrix
+
+    # Extract center positions (e.g., [center_x, center_y]) from detections and tracks
+    h, w, _ = shape
+    det_centers = np.asarray([[det.xywh[0] / w, det.xywh[1] / h] for det in detections], dtype=np.float32)
+    track_centers = np.asarray([[track.xywh[0] / w, track.xywh[1] / h] for track in tracks], dtype=np.float32)
+
+    # Calculate Euclidean distance matrix between track centers and detection centers
+    cost_matrix = cdist(track_centers, det_centers, metric="euclidean")
+
+    return cost_matrix
+
+
 def fuse_score(cost_matrix: np.ndarray, detections: list) -> np.ndarray:
     """
     Fuses cost matrix with detection scores to produce a single similarity matrix.
