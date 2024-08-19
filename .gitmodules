@@ -1,0 +1,3 @@
+[submodule "reid"]
+	path = reid
+	url = https://github.com/mrba59/torch_reid
