@@ -209,7 +209,8 @@ class BOTSORT(BYTETracker):
             return []
         if self.args.with_reid and self.encoder is not None:
             features_keep = [self.encoder(img[int(y):int(y + h), int(x):int(x + w)]) for x, y, w, h, cls in dets]
-            features_keep = [np.stack([f.cpu().numpy() for f in features_keep])]
+            features_keep = np.stack([f.cpu().numpy() for f in features_keep])
+            features_keep =features_keep.reshape(len(features_keep), -1)
             return [BOTrack(xyxy, s, c, f) for (xyxy, s, c, f) in zip(dets, scores, cls, features_keep)]  # detections
         else:
             return [BOTrack(xyxy, s, c) for (xyxy, s, c) in zip(dets, scores, cls)]  # detections
@@ -217,8 +218,8 @@ class BOTSORT(BYTETracker):
     def get_dists(self, tracks, detections, shape):
         """Calculates distances between tracks and detections using IoU and optionally ReID embeddings."""
 
-        dist_eucl = matching.euclidean_distance_center(tracks, detections, shape)
-        dists = matching.iou_distance(tracks, detections)
+        dists = matching.euclidean_distance_center(tracks, detections, shape)
+        #dists = matching.iou_distance(tracks, detections)
         dists_mask = dists > self.proximity_thresh
 
         if self.args.fuse_score:
