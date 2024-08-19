@@ -9,6 +9,7 @@ from .byte_tracker import BYTETracker, STrack
 from .utils import matching
 from .utils.gmc import GMC
 from .utils.kalman_filter import KalmanFilterXYWH
+from reid.torchreid.utils import FeatureExtractor
 
 
 class BOTrack(STrack):
@@ -190,8 +191,12 @@ class BOTSORT(BYTETracker):
         self.appearance_thresh = args.appearance_thresh
 
         if args.with_reid:
-            # Haven't supported BoT-SORT(reid) yet
-            self.encoder = None
+            # Load the ReID model from the checkpoint
+            self.encoder = FeatureExtractor(
+                model_name='osnet_x1_0',
+                model_path=args.reid_checkpoint_path,
+                device='cuda'
+            )
         self.gmc = GMC(method=args.gmc_method)
 
     def get_kalmanfilter(self):
@@ -203,7 +208,8 @@ class BOTSORT(BYTETracker):
         if len(dets) == 0:
             return []
         if self.args.with_reid and self.encoder is not None:
-            features_keep = self.encoder.inference(img, dets)
+            features_keep = [self.encoder(img[int(y):int(y + h), int(x):int(x + w)]) for x, y, w, h, cls in dets]
+            features_keep = [np.stack([f.cpu().numpy() for f in features_keep])]
             return [BOTrack(xyxy, s, c, f) for (xyxy, s, c, f) in zip(dets, scores, cls, features_keep)]  # detections
         else:
             return [BOTrack(xyxy, s, c) for (xyxy, s, c) in zip(dets, scores, cls)]  # detections
