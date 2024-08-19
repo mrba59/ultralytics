@@ -334,7 +334,7 @@ class BYTETracker:
             STrack.multi_gmc(strack_pool, warp)
             STrack.multi_gmc(unconfirmed, warp)
 
-        dists = self.get_dists(strack_pool, detections)
+        dists = self.get_dists(strack_pool, detections, img.shape)
         matches, u_track, u_detection = matching.linear_assignment(dists, thresh=self.args.match_thresh)
 
         for itracked, idet in matches:
@@ -369,7 +369,7 @@ class BYTETracker:
                 lost_stracks.append(track)
         # Deal with unconfirmed tracks, usually tracks with only one beginning frame
         detections = [detections[i] for i in u_detection]
-        dists = self.get_dists(unconfirmed, detections)
+        dists = self.get_dists(unconfirmed, detections, img.shape)
         matches, u_unconfirmed, u_detection = matching.linear_assignment(dists, thresh=0.7)
         for itracked, idet in matches:
             unconfirmed[itracked].update(detections[idet], self.frame_id)
