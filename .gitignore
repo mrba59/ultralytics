@@ -178,3 +178,5 @@ ultralytics/cfg/trackers/
 track.py
 predict.py
 
+#reid
+*reid/
