@@ -23,7 +23,7 @@ video = "/home/reda/Documents/tetegehm_malo.mp4"
 nb_pred_list = []
 start = time.time()
 for result in tqdm.tqdm(
-        model.track(video, conf=0.25, persist=True, tracker="bytetrack.yaml", save=True, stream=True, save_txt=True,
+        model.track(video, conf=0.25, persist=True, tracker="botsort.yaml", save=True, stream=True, save_txt=True,
                     batch=16, save_conf=True, show_labels=True, boxes=True, show_conf=True, vid_stride=6, iou=0.7,
                     project="/home/reda/Documents/projets/results_yolo/", name="tournoi_yolov8x")):
     nb_pred_list.append(len(result.boxes))

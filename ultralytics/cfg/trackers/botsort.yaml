@@ -15,4 +15,5 @@ gmc_method: sparseOptFlow # method of global motion compensation
 # ReID model related thresh (not supported yet)
 proximity_thresh: 0.5
 appearance_thresh: 0.25
-with_reid: False
+with_reid: True
+reid_checkpoint_path: /home/reda/Documents/projets/deep-person-reid-master/log/resnet50/model/model.pth.tar-120
