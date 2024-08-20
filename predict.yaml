@@ -7,11 +7,13 @@ model_path: "yolov8x.pt"
 video_path: "/home/reda/Documents/tetegehm_malo.mp4"
 iou: 0.7
 conf: 0.25
-output_path: "results/"
+output_path: "/home/reda/Documents/projets/results_yolo"
+#output_path: "results/"
 output_name: "yolov8_detection"
-save: false
+save: true
 stream: true
 save_txt: true
 save_conf: true
-vid_stride: 1
+vid_stride: 4
 save_crop: false
+classes: [0]
