@@ -5,7 +5,7 @@ tracker_type: botsort # tracker type, ['botsort', 'bytetrack']
 track_high_thresh: 0.5 # threshold for the first association
 track_low_thresh: 0.3 # threshold for the second association
 new_track_thresh: 0.4 # threshold for init new track if the detection does not match any tracks
-track_buffer: 10 # buffer to calculate the time when to remove tracks
+track_buffer: 100 # buffer to calculate the time when to remove tracks
 match_thresh: 0.01 # threshold for matching tracks
 fuse_score: False # Whether to fuse confidence scores with the iou distances before matching
 # min_box_area: 10  # threshold for min box areas(for tracker evaluation, not used for now)
@@ -13,20 +13,20 @@ fuse_score: False # Whether to fuse confidence scores with the iou distances bef
 # BoT-SORT settings
 gmc_method: sparseOptFlow # method of global motion compensation
 # ReID model related thresh (not supported yet)
-proximity_thresh: 0.02
+proximity_thresh: 0.04
 appearance_thresh: 0.05
 with_reid: True
 reid_checkpoint_path: /home/reda/Documents/projets/deep-person-reid-master/log/resnet50/model/model.pth.tar-120
 field:
   left_line:
-    - [6, 677]
-    - [844, 137]
+    - [11   ,713]
+    - [871 ,  142]
   right_line:
-    - [2896, 115]
-    - [3833, 708]
+    - [2873,   112]
+    - [3835 ,  722]
   top_line:
-    - [846, 135]
-    - [2907, 115]
+    - [846,   146]
+    - [2885,   124]
   bottom_line:
     - [4, 2153]
     - [3835, 2114]
