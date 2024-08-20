@@ -37,7 +37,8 @@ def main(config):
                         project=config['output_path'],
                         name=config['output_name'],
                         vid_stride=config['vid_stride'],
-                        tracker=config['tracker'])):
+                        tracker=config['tracker'],
+                        classes=config['classes'])):
         nb_pred_list.append(len(result.boxes))
         pass
     print(f"elapsed time  {time.time() - start}")
@@ -46,14 +47,23 @@ def main(config):
 
 if __name__ == "__main__":
     # Load the YAML configuration
-    with open('predict.yaml', 'r') as file:
+    with open('track.yaml', 'r') as file:
         config = yaml.safe_load(file)
 
     # Run the main function with the loaded config
     main(config)
-    config_save_path = os.path.join(config['output_path'], ['output_name'], 'track.yaml')
+    dirs = [d for d in os.listdir(config['output_path']) if
+            d.startswith(config['output_name'])]
+    latest_dir = max(dirs, key=lambda d: os.path.getctime(os.path.join(config['output_path'], d)))
+    config_save_path = os.path.join(config['output_path'], latest_dir, 'track.yaml')
     with open(config_save_path, 'w') as file:
         yaml.dump(config, file)
+
+    with open(os.path.join('ultralytics/cfg/trackers/', config['tracker']), 'r') as file:
+        config_tracker_type = yaml.safe_load(file)
+    config_tracker_type = os.path.join(config['output_path'], latest_dir, config['tracker'])
+    with open(config_tracker_type, 'w') as file:
+        yaml.dump(config_tracker_type, file)
 
     print(f"Configuration file saved to: {config_save_path}")
 
@@ -64,5 +74,3 @@ for result in tqdm.tqdm(
                     batch=16, save_conf=True, show_labels=True, boxes=True, show_conf=True, vid_stride=2, iou=0.7,
                     project="/home/reda/Documents/projets/results_yolo/", name="tournoi_yolov8x")):
     nb_pred_list.append(len(result.boxes))"""
-
-

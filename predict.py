@@ -35,7 +35,8 @@ def main(config):
                           save_conf=config['save_conf'],
                           project=config['output_path'],
                           name=config['output_name'],
-                          vid_stride=config['vid_stride'])):
+                          vid_stride=config['vid_stride'],
+                          classes=config['classes'])):
         nb_pred_list.append(len(result.boxes))
         pass
     print(f"elapsed time  {time.time() - start}")
@@ -49,7 +50,10 @@ if __name__ == "__main__":
 
     # Run the main function with the loaded config
     main(config)
-    config_save_path = os.path.join(config['output_path'], ['output_name'], 'predict.yaml')
+    dirs = [d for d in os.listdir(config['output_path']) if
+            d.startswith(config['output_name'])]
+    latest_dir = max(dirs, key=lambda d: os.path.getctime(os.path.join(config['output_path'], d)))
+    config_save_path = os.path.join(config['output_path'], latest_dir, 'predict.yaml')
     with open(config_save_path, 'w') as file:
         yaml.dump(config, file)
 
