@@ -1,0 +1,15 @@
+classes:
+- 0
+conf: 0.25
+iou: 0.7
+model_path: yolov8x.pt
+output_name: yolov8_track
+output_path: results/
+save: false
+save_conf: true
+save_crop: false
+save_txt: true
+stream: true
+tracker: botsort.yaml
+vid_stride: 3
+video_path: /home/reda/Documents/tetegehm_malo.mp4
