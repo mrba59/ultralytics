@@ -1,0 +1,23 @@
+:root {
+    --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+        "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+
+    /* main color groups */
+    --bg-main: #fff;
+    --bg-main-hover: #f2f2f2;
+    --bg-main-hover-darker: #e6e6e6;
+
+    --fg-main-regular: #171717;
+    --fg-main-light: #666;
+
+    --border-main-regular: #ebebeb;
+
+    /* secondary color groups */
+    --bg-secondary: #171717;
+    --bg-secondary-hover: #383838;
+
+    --fg-secondary-light: #fff;
+
+    /* accent color */
+    --text-accent: #68b5fb;
+}

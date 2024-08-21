@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="/styles/vars.css" />
+        <link rel="stylesheet" href="/styles/globals.css" />
+        <link
+            rel="stylesheet"
+            href="/libs/font-awesome.css"
+        />
+        <script defer type="module" src="/index.js"></script>
+        <title>Football stuff</title>
+    </head>
+    <body x-data>
+        <div x-component.outer="'header'"></div>
+        <main>
+            <div id="video-container-wrapper">
+                <div id="video-container" style="aspect-ratio: 3840/2160">
+                    <canvas id="video-canvas" class="video-element" style="z-index: 5"></canvas>
+                    <video id="video-player" class="video-element"></video>
+                </div>
+            </div>
+            <div id="elements-list" x-component.inner="'elements-list'"></div>
+        </main>
+    </body>
+</html>
+<style>
+    main {
+        display: flex;
+        justify-content: space-between;
+        max-height: 100%;
+        height: 100%;
+        overflow: hidden;
+    }
+
+    #video-container-wrapper {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        #video-container {
+            width: 95%;
+            position: relative;
+
+            .video-element {
+                position: absolute;
+            }
+        }
+    }
+
+    #elements-list {
+        height: 100%;
+        width: 25%;
+        border-left: 1px solid var(--border-main-regular);
+        display: flex;
+        flex-direction: column;
+        overflow-y: scroll;
+
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+
+        ::-webkit-scrollbar {
+            display: none;
+        }
+    }
+</style>

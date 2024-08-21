@@ -1,0 +1,51 @@
+<div class="elements-wrapper">
+    <template x-for="element in $store.video.getFrameData().sort((a,b)=>a.elementId - b.elementId)">
+        <div class="element-card">
+            <span>
+                <h1 x-text="'id: '"></h1>
+                <span
+                    x-data="{isInputMode: false, input: element.elementId}"
+                    @click="isInputMode = true"
+                    @click.outside="isInputMode = false; input = element.elementId"
+                >
+                    <h1 x-show="!isInputMode" x-text="element.elementId"></h1>
+                    <input
+                        class="inline-input"
+                        x-show="isInputMode"
+                        :value="input"
+                        type="number"
+                        x-model="input"
+                        @keydown.enter="$store.video.changeIdOfElement(element.elementId, input); isInputMode = false"
+                    />
+                </span>
+            </span>
+            <span>
+                <button>
+                    <i class="fa-solid fa-shuffle"></i>
+                </button>
+                <button @click="$store.video.removeIdFromDataSet(element.elementId)">
+                    <i class="fa-solid fa-trash"></i>
+                </button>
+            </span>
+        </div>
+    </template>
+</div>
+<style>
+    .elements-wrapper {
+        height: fit-content;
+    }
+    .element-card {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 4px 8px;
+        margin: 4px;
+        border-radius: 6px;
+        border: 1px solid var(--border-main-regular);
+
+        .inline-input {
+            height: min-content;
+            width: 60px;
+        }
+    }
+</style>

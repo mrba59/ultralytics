@@ -1,0 +1,25 @@
+<header>
+    <nav>
+        <h1>FOOTBALL STUFF</h1>
+        <a
+            style="margin-left: 30px"
+            x-text="'Current frame: ' + $store.video.currentFrame"
+        ></a>
+        <span style="margin-inline: 24px">
+            <button @click="$store.video.prevFrame()">
+                <i class="fa-solid fa-angle-left"></i>
+            </button>
+            <button data-theme="black" @click="$store.video.pause()">
+                <i
+                    :class="$store.video.isVideoPlaying ? 'fa-solid fa-pause': 'fa-solid fa-play'"
+                ></i>
+            </button>
+            <button @click="$store.video.nextFrame()">
+                <i class="fa-solid fa-angle-right"></i>
+            </button>
+        </span>
+        <button style="margin-left: auto" @click="$store.video.getVideo()">
+            get video
+        </button>
+    </nav>
+</header>
