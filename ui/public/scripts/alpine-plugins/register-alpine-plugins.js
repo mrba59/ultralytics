@@ -1,7 +1,9 @@
 import { Alpine } from "../../libs/alpine.esm.js";
-import { persist } from "../../libs/alpine-persist.esm.js";
+import  {persist} from "../../libs/alpine-persist.esm.js";
 import Component from "./components-plugin.js";
 
+
+// console.log("persist", persist)
 Alpine.plugin(persist);
 Alpine.plugin(Component);
 

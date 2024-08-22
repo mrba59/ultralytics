@@ -18,8 +18,80 @@
                 <i class="fa-solid fa-angle-right"></i>
             </button>
         </span>
-        <button style="margin-left: auto" @click="$store.video.getVideo()">
-            get video
-        </button>
+        <div class="load-project-container" x-data="{isPopoverVisible: false}">
+            <button @click="isPopoverVisible = true">
+                open new project
+            </button>
+            <div x-show="isPopoverVisible" class="popover-project-wrapper">
+                <div 
+                    x-data="{inputName: '', inputVideoPath: '', result: null}" 
+                    x-show="isPopoverVisible" 
+                    class="popover-project-selection"
+                    @click.outside="isPopoverVisible = false"
+                >
+                    <h3>project name</h3>
+                    <input 
+                        :style="result == 'project path not found' && 'border: 1px solid red'"
+                        type="text" 
+                        value="yolov8_track" 
+                        placeholder="i.e: yolov8_track"
+                        x-model="inputName"
+                    >
+                    <h3>video path</h3>
+                    <input 
+                        :style="result == 'video path not found' && 'border: 1px solid red'"
+                        type="text" 
+                        value="/home/victor/Desktop/football/tetegehm_malo.mp4" 
+                        placeholder="i.e: /home/victor/Desktop/football/tetegehm_malo.mp4"
+                        x-model="inputVideoPath"
+                    >
+                    <button 
+                        data-theme="black" 
+                        @click="
+                            result = await $store.video.getVideo(inputName, inputVideoPath);
+                            if(result === true) isPopoverVisible = false;
+                        "
+                    >
+                        open
+                    </button>
+                </div>
+            </div>
+        </div>
     </nav>
 </header>
+<style>
+    header{
+        position: relative;
+    }
+
+    .load-project-container{
+        margin-left: auto;
+        /* position: relative; */
+        .popover-project-wrapper{
+            position: absolute;
+            top: 0;
+            right: 0;
+            height: 100vh;
+            width: 100vw;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(0, 0, 0, 0.5);
+
+            .popover-project-selection{
+                background-color: var(--bg-main);
+                border: 1px solid var(--border-main-regular);
+                border-radius: 6px;
+                padding: 24px;
+                z-index: 12;
+                display: flex;
+                flex-direction: column;
+    
+                h3, input{
+                    margin-bottom: 12px;
+                }
+            }
+        }
+    }
+</style>

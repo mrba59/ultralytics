@@ -1,4 +1,4 @@
-import { Alpine } from "../libs/alpine.esm.js";
+import {Alpine} from "../libs/alpine.esm.js";
 
 const VideoStuff = {
     videoRef: /** @type {HTMLVideoElement} */ (document.querySelector("#video-player")),
@@ -8,6 +8,7 @@ const VideoStuff = {
         heigth: 2160,
         fps: 5,
     },
+    videoPath: Alpine.$persist(""),
     /** @type {Array<any>} */
     videoFramesInfo: Alpine.$persist([]),
     currentFrame: 1,
@@ -46,13 +47,14 @@ const VideoStuff = {
         }
     },
     prevFrame() {
-        if (this.currentFrame > 1) {
-            this.currentFrame--;
-            this.drawToCanvas();
-
-            if (!this.isVideoPlaying) {
-                this.setVideoFrame();
-            }
+        if (this.currentFrame <= 1) {
+            return
+        }
+        this.currentFrame--;
+        this.drawToCanvas();
+        
+        if (!this.isVideoPlaying) {
+            this.setVideoFrame();
         }
     },
     pause() {
@@ -78,6 +80,10 @@ const VideoStuff = {
     },
 
     drawToCanvas() {
+        if(!this.videoFramesInfo[this.currentFrame - 1]){
+            return
+        }
+
         const WIDTH = this.canvasRef.width;
         const HEIGTH = this.canvasRef.height;
 
@@ -104,14 +110,24 @@ const VideoStuff = {
         }
     },
 
-    async getVideo(project = "tetegehm_malo") {
-        const res = await fetch("assets/" + project + ".json");
-        const data = await res.json();
+    async getVideo(projectName, videoPath) {    
+        const res = await fetch("api/get-project/" + projectName);
+        
+        if(res.status !== 200) return "project path not found"
 
-        //this.videoFramesInfo = data;
-        this.videoRef.src = "assets/" + project + ".mp4";
+        const data = await res.json();
+        this.videoFramesInfo = data.frames;
+    
+        const res2 = await fetch("/video/" + btoa(videoPath))
+        
+        if(res2.status !== 200) return "video path not found"
+        
+        this.videoPath = "/video/" + btoa(videoPath)
+        this.videoRef.src = this.videoPath;
+        
 
         this.drawToCanvas();
+        return true
     },
 
     setDimensions() {
@@ -130,8 +146,12 @@ const VideoStuff = {
         if (this._isIinit) return;
         this._isIinit = true;
 
-        this.setDimensions();
-        this.getVideo();
+        setTimeout(()=>{
+            this.videoRef.src = this.videoPath;
+    
+            this.setDimensions();
+            this.drawToCanvas();
+        }, 10)
     },
     _isIinit: false,
 };
