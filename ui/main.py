@@ -5,6 +5,13 @@ import mimetypes
 
 app = Flask(__name__)
 
+@app.route('/')
+def serve_app_enty():
+    try:
+        return send_from_directory("public", "index.html")
+    except FileNotFoundError:
+        abort(404)
+
 @app.route('/<path:filename>')
 def serve_front_app(filename):
     try:

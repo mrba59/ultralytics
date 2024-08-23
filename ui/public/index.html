@@ -21,7 +21,9 @@
                     <video id="video-player" class="video-element"></video>
                 </div>
             </div>
-            <div id="elements-list" x-component.inner="'elements-list'"></div>
+            <template x-if="!$store.video.isVideoPlaying">
+                <div id="elements-list" x-component.inner="'elements-list'"></div>
+            </template>
         </main>
     </body>
 </html>
