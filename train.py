@@ -10,5 +10,4 @@ results = model.train(
     epochs=100,
     batch=12,
     pretrained=True,
-    name='yolov8_robo_human_aerial_view_person',
-    )
+    name='yolov8_robo_human_aerial_view_person')

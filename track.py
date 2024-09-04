@@ -5,9 +5,10 @@ from ultralytics import YOLO
 import time
 import tqdm
 import numpy as np
-import pickle
+
 
 def main(config):
+
     print(f"Model Path: {config['model_path']}")
     print(f"Video Path: {config['video_path']}")
     print(f"IOU Threshold: {config['iou']}")
