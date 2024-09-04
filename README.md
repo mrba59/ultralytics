@@ -4,8 +4,7 @@ This repository is a fork of the [YOLOv8 by Ultralytics](https://github.com/ultr
 
 ## Table of Contents
 
-- [Requirements and Installation](#requirements ans installation)
-- [How to Use](#how-to-use)
+- [Requirements and Installation](#requirements-and-installation)
 - [Usage](#usage)
 - [References](#references)
 
