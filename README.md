@@ -18,11 +18,11 @@ This project requires dependencies from both the YOLOv8 and TorchReID repositori
 
 ## How to Use
 
-To utilize the YOLOv8 model with the integrated ReID and tracking algorithm, use the `track.py` script. This script is configured using YAML configuration files that define the tracking parameters.
+To run YOLOv8 model with the integrated ReID and tracking algorithm, use the `track.py` script. This script is configured using YAML configuration files that define the tracking and detector parameters.
 
 ### Configuration
 
-- **`track.yaml`**: Located in the root directory, this file controls the general parameters for the detetction model.
+- **`track.yaml`**: Located in the root directory, this file controls the general parameters for the detection model.
 
 - **`botsort.yaml`**: Located in `ultralytics/cfg/trackers/botsort.yaml`, this file is specifically for configuring the BoT-SORT algorithm, which is the only tracking algorithm currently implemented.
 
