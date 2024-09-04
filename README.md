@@ -8,7 +8,7 @@ This repository is a fork of the [YOLOv8 by Ultralytics](https://github.com/ultr
 - [Usage](#usage)
 - [References](#references)
 
-## Requirements
+## Requirements and Installation
 
 This project requires dependencies from both the YOLOv8 and TorchReID repositories, along with additional GPU hardware for optimal performance.
 
