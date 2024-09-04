@@ -22,20 +22,24 @@ To run YOLOv8 model with the integrated ReID and tracking algorithm, use the `tr
 
 ### Configuration
 
-- **`track.yaml`**: Located in the root directory, this file controls the general parameters for the detection model.
+- **`track.yaml`**: Located in the root directory, this file controls the general parameters for tracking.
 
 - **`botsort.yaml`**: Located in `ultralytics/cfg/trackers/botsort.yaml`, this file is specifically for configuring the BoT-SORT algorithm, which is the only tracking algorithm currently implemented.
 
   - **Example Parameters in `botsort.yaml`:**
-    - `reid_model`: Path to the ReID model.
-    - `conf_thres`: Confidence threshold for detections.
-    - `iou_thres`: IOU threshold for association.
+    - `reid_checkpoint_path:`: Path to your ReID model.
+    - `field`: This parameter is used to filter detected objects within a specified area of the frame. If your camera is stationary and you want to restrict detection to a particular region of interest, you can specify the coordinates of this area using this parameter else set to None. 
+
+      - **Usage**: 
+        - If you want to focus detection on a specific region, you can pass the coordinates of the area (e.g., boundaries or a polygon). This is useful for applications where you know that objects of interest are only present within a defined area.
+        - If your video footage is not constrained to a fixed area or you do not wish to restrict detection to a specific region, set this parameter to `none`. This will ensure that the detection algorithm evaluates the entire frame.
 
 Ensure these files are properly configured before running the model.
 
 ### Running the Model
 
-To run the YOLOv8 model with ReID and BoT-SORT tracking, use the following command:
+To run the YOLOv8 model with ReID and BoT-SORT tracking, use the following command, 
+
 
 ```bash
 python track.py
