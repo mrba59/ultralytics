@@ -4,12 +4,13 @@ model_path: "yolov8x.pt"
 # model_path: "runs/detect/yolov8_robo_human/weights/best.pt"
 # model_path: "runs/detect/yolov8_robo_human_aerial_view_person/weights/best.pt""
 # model_path: "runs/detect/yolov8_robo2/weights/best.pt"
-video_path: "/home/reda/Documents/tetegehm_malo.mp4"
-iou: 0.7
-conf: 0.25
-#output_path: "/home/reda/Documents/projets/results_yolo"
-output_path: "results/"
-output_name: "yolov8_track"
+video_path: "/media/reda/ssd2to/drone/rosen_coupe_france/2"
+#video_path: "/home/reda/Documents/tetegehm_malo.mp4"
+iou: 0.6
+conf: 0.3
+output_path: "/home/reda/Documents/projets/results_yolo"
+#output_path: "results/"
+output_name: "rosen_cdf"
 save: false
 stream: true
 save_txt: true

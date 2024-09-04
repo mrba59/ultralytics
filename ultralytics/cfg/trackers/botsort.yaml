@@ -19,15 +19,16 @@ with_reid: True
 reid_checkpoint_path: /home/reda/Documents/projets/deep-person-reid-master/log/resnet50/model/model.pth.tar-120
 field:
   left_line:
-    - [11   ,713]
-    - [871 ,  142]
+    - [9 ,  751]
+    - [905,   139]
   right_line:
-    - [2873,   112]
-    - [3835 ,  722]
+    - [2853,   117]
+    - [3833,   753]
   top_line:
     - [846,   146]
     - [2885,   124]
   bottom_line:
     - [4, 2153]
     - [3835, 2114]
+
 
